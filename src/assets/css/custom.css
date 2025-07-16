@@ -1,0 +1,25 @@
+.btn-primary-resa-color {
+    background-color: #3c8376;
+    border-color: #3c8376;
+    color: #fff;
+  }
+  
+  .btn-primary-resa-color:hover,
+  .btn-primary-resa-color:focus {
+    background-color: #336f64;
+    border-color: #336f64;
+    color: #fff;
+  }
+  
+  .text-primary-resa-color {
+    color: #3c8376 !important;
+  }
+  
+  .bg-primary-resa-color {
+    background-color: #3c8376 !important;
+    color: #fff;
+  }
+  
+  .border-primary-resa-color {
+    border-color: #3c8376 !important;
+  }
