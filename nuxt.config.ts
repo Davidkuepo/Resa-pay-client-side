@@ -1,4 +1,9 @@
 export default {
+  target: 'static', 
+  ssr: true,      
+  generate: {
+    fallback: true 
+  },
   srcDir: 'src/',
   head: {
     title: 'Resa Pay',
