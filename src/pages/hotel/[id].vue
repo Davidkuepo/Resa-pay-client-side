@@ -27,6 +27,8 @@
     </div>
   </div>
 
+  <div v-if="isLoading" class="loader">Loading...</div>
+
   <Footer />
 </template>
 
@@ -43,11 +45,9 @@ import HotelInfo from '@/components/HotelInfo.vue'
 import HotelFeatures from '@/components/HotelFeatures.vue'
 import HotelTabs from '@/components/HotelTabs.vue'
 
-
 const route = useRoute()
 const { getHotelById } = useHotelService()
 const hotelId = route.params.id
-
 
 const hotel = ref(null)
 const images = ref([])
@@ -55,7 +55,6 @@ const breadcrumbItems = ref([
   { label: 'Accueil', link: '/' },
   { label: 'Hôtels', link: '/hotels' },
 ])
-
 const tabsData = ref([
   {
     title: 'Caractéristiques',
@@ -66,13 +65,28 @@ const tabsData = ref([
     component: 'TabContent2',
   },
 ])
+const isLoading = ref(true) 
 
 useAsyncData(async () => {
-  const result = await getHotelById(hotelId)
-  if (result) {
-    hotel.value = result
-    images.value = result.images || []
-    breadcrumbItems.value.push({ label: result.name })
+  try {
+    const result = await getHotelById(hotelId)
+    if (result) {
+      hotel.value = result
+      images.value = result.images || []
+      breadcrumbItems.value.push({ label: result.name })
+    }
+  } catch (error) {
+    console.error('Erreur lors de la récupération de l\'hôtel :', error)
+  } finally {
+    isLoading.value = false 
   }
 })
 </script>
+
+<style scoped>
+.loader {
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 20px;
+}
+</style>

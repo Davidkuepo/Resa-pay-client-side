@@ -3,7 +3,10 @@
     <Navbar />
     <HeroSection />
     <HotelFilters :hotels="hotels" @filter="applyFilters" />
-    <FeaturedHotels :hotels="filteredHotels" />
+    
+    <div v-if="isLoading" class="loader">Loading...</div>
+    
+    <FeaturedHotels v-else :hotels="filteredHotels" />
     <BenefitsSection />
     <PopularDestinations />
     <TestimonialsSection />
@@ -29,21 +32,27 @@ const { getHotels } = useHotelService()
 
 const hotels = ref([])
 const filteredHotels = ref([])
+const isLoading = ref(true) 
 
- useAsyncData(async () => {
-  const response = await getHotels()
-  console.log('Données reçues de l’API :', response)
+useAsyncData(async () => {
+  try {
+    const response = await getHotels()
+    console.log('Données reçues de l’API :', response)
 
-  if (Array.isArray(response)) {
-    hotels.value = response
-    filteredHotels.value = [...response]
-  } else {
-    console.error('getHotels() ne retourne pas un tableau')
-    hotels.value = []
-    filteredHotels.value = []
+    if (Array.isArray(response)) {
+      hotels.value = response
+      filteredHotels.value = [...response]
+    } else {
+      console.error('getHotels() ne retourne pas un tableau')
+      hotels.value = []
+      filteredHotels.value = []
+    }
+  } catch (error) {
+    console.error('Erreur lors de la récupération des hôtels :', error)
+  } finally {
+    isLoading.value = false 
   }
 })
-
 
 function applyFilters({ city, sort }) {
   let result = [...hotels.value]
@@ -67,5 +76,11 @@ function applyFilters({ city, sort }) {
 <style scoped>
 .homepage {
   overflow-x: hidden;
+}
+
+.loader {
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 20px;
 }
 </style>
