@@ -4,6 +4,15 @@ export default {
   generate: {
     fallback: true 
   },
+  netlifyFiles: {
+    redirects: [
+      {
+        from: '/*',
+        to: '/index.html',
+        status: 200
+      }
+    ]
+  },
   srcDir: 'src/',
   head: {
     title: 'Resa Pay',
